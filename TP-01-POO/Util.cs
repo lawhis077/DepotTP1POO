@@ -1,8 +1,9 @@
 ﻿//-----------------------------------------
 //  Nom: Util.cs
-//  Auteur : Alain Martel
+//  Auteur : Louis Lamonde
 //  Date : 2025-01-27
-//  Description: 
+//  Description: Fichier contenant les methodes au
+//  fonctionnement ainsi que l'affichage du programme 
 //-----------------------------------------
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AtelierOO_101
-{
+namespace TP01Connect4
 
-   
+{
     internal class Util
     {
 
         public Random R = new Random();
 
         //------------------------------------------
-        //
+        // 
         //------------------------------------------
         public void Titre(string leTitre)
         {
@@ -98,7 +98,7 @@ namespace AtelierOO_101
         //------------------------------------------
         //
         //------------------------------------------
-        public void Sep(string msg="")
+        public void Sep(string msg = "")
         {
             Console.WriteLine($"----------{msg}----------");
         }
