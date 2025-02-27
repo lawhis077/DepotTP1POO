@@ -1,9 +1,8 @@
 ﻿//-----------------------------------------
 //  Nom: Util.cs
 //  Auteur : Louis Lamonde
-//  Date : 2025-01-27
-//  Description: Fichier contenant les methodes au
-//  fonctionnement ainsi que l'affichage du programme 
+//  Date : 2025-02-26
+//  Description: Fichier contenant les methodes utiles à l'affichage du programme
 //-----------------------------------------
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace TP01Connect4
         public Random R = new Random();
 
         //------------------------------------------
-        // 
+        // Methode Mettant un titre au programme 
         //------------------------------------------
         public void Titre(string leTitre)
         {
@@ -42,7 +41,7 @@ namespace TP01Connect4
         }
 
         //------------------------------------------
-        //
+        // Méthode permettant l'entrée de donnée par l'utilisateur
         //------------------------------------------
         public char SaisirChar()
         {
@@ -51,35 +50,9 @@ namespace TP01Connect4
             return cle.KeyChar;
         }
 
-        //------------------------------------------
-        //
-        //------------------------------------------
-        public int SaisirEntier()
-        {
-            string? input = Console.ReadLine();
-            if (int.TryParse(input, out int res))
-            {
-                return res;
-            }
-            else
-                return 0;
-        }
-        //------------------------------------------
-        //
-        //------------------------------------------
-        public double SaisirReel()
-        {
-            string? input = Console.ReadLine();
-            if (double.TryParse(input, out double res))
-            {
-                return res;
-            }
-            else
-                return 0.0;
-        }
 
         //------------------------------------------
-        //
+        // Méthode permettant de vider l'écran
         //------------------------------------------
         public void ViderEcran()
         {
@@ -88,19 +61,13 @@ namespace TP01Connect4
         }
 
         //------------------------------------------
-        //
+        // Méthode mettant une pause au programme 
         //------------------------------------------
         public void Pause()
         {
             Console.WriteLine("\n\tAppuyez sur une touche...");
             Console.ReadKey(true);
         }
-        //------------------------------------------
-        //
-        //------------------------------------------
-        public void Sep(string msg = "")
-        {
-            Console.WriteLine($"----------{msg}----------");
-        }
+
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 //  Nom: Program.cs -- Connect4
 //  Auteur : Louis Lamonde
 //  Date : 2025-01-27
-//  Description: 
+//  Description: Fichier contenant le déroulement général du jeux Connect 4
 //-----------------------------------------
 
 namespace TP01Connect4
@@ -21,49 +21,22 @@ namespace TP01Connect4
         public static readonly int DECALAGE_Y = 5;
         public const int MAX_RANGEE = 6;
         public bool tantQuePartieContinue = false;
-
-
+        public string symbole = "x";
         public int col;
+        // Méthode contenant le déroulement général d'une partie ainsi que si l'utilisateur veux refaire une partie
         public void Jouer()
         {
 
             char choixUtilisateur = 'X';
             while (choixUtilisateur != 'o' || choixUtilisateur != 'O')
             {
+                tantQuePartieContinue = false;
+                Grille _grille = new();
 
-                Grille _grille = new Grille();
-                int nombreDeTour = 0;
-
-                while (!tantQuePartieContinue)
-                {
-                    nombreDeTour++;
-                    u.Titre("Connect 4!!       /       Par Louis Lamonde");
+                PartieEnCours(_grille);
 
 
-                    _grille.Afficher();
-
-                    Console.Write("\n\nVotre Coup : ");
-                    char coup = u.SaisirChar();
-
-                    col = ConvertCoupEnCol(coup);
-                    if (nombreDeTour % 2 == 0)
-                    {
-                        
-                        _grille.InsererJeton(col, "x");
-                        _grille.Afficher();
-                      
-                    }
-                    else
-                    {
-                     
-                        _grille.InsererJeton(col, "o");
-                        _grille.Afficher();
-                     
-                    }
-                    tantQuePartieContinue = _grille.EstGagnant();
-                }
-
-                Console.WriteLine("\nFelicitation au joueur {symbole} pour avoir gagné la partie!!");
+               
                 Console.WriteLine("Voulez vous rejouer? [o/n]");
 
                 Util util = new Util();
@@ -73,8 +46,50 @@ namespace TP01Connect4
             Console.WriteLine("Merci d'avoir jouer!!");
         }
 
+        // Méthode contenant le déroulement d'une partie en cours
+        public void PartieEnCours(Grille _grille)
+        {
+            int nombreDeTour = 0;
+            while (!tantQuePartieContinue)
+            {
+                nombreDeTour++;
+                u.Titre("Connect 4!!       /       Par Louis Lamonde");
 
-        private int ConvertCoupEnCol(char coup)
+                _grille.Afficher();
+
+                Console.Write("\n\nVotre Coup : ");
+                char coup = u.SaisirChar();
+
+                col = ConvertCoupEnCol(coup);
+
+                if (nombreDeTour % 2 == 0)
+                {
+                    symbole = "o"; 
+                    _grille.InsererJeton(col, symbole);
+                }
+                else
+                {
+                    symbole = "x"; 
+                    _grille.InsererJeton(col, symbole);
+                }
+
+                _grille.Afficher();
+
+               
+                if (_grille.EstGagnant())
+                {
+                    tantQuePartieContinue = true;
+                    Console.WriteLine($"\nFelicitation au joueur {symbole} pour avoir gagné la partie!!");
+                }
+                else if (_grille.PartieNulle())
+                {
+                    tantQuePartieContinue = true;
+                    Console.WriteLine("\nLa partie est nulle!");
+                }
+            }
+        }
+        // Méthode s'occupant de la conversion entre le coup choisi par le joueur et la colonne affectée
+        public int ConvertCoupEnCol(char coup)
         {
 
             switch (coup)
@@ -95,9 +110,6 @@ namespace TP01Connect4
                     return 6;
 
                 default: return 0;
-
-
-
 
             }
         }

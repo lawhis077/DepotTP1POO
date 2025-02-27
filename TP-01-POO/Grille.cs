@@ -4,12 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//-----------------------------------------
+//  Nom: Grille.cs
+//  Auteur : Louis Lamonde
+//  Date : 2025-02-26
+//  Description: S'occupe de la création ainsi que l'affichage de la grille et la vérification de combinaisons gagnantes
+//-----------------------------------------
+
 namespace TP01Connect4
 {
     internal class Grille
     {
         Colonne[] _colonnes = new Colonne[7];
-
+        // Création de la grille contenant les colonnes
         public Grille()
         {
             for (int i = 0; i < 7; i++)
@@ -19,7 +26,7 @@ namespace TP01Connect4
             }
         }
 
-
+        // Affichage de la grille ainsi que les différents choix possible pour le joueur
         public void Afficher()
         {
             Console.SetCursorPosition(Puissance4.DECALAGE_X, Puissance4.DECALAGE_Y);
@@ -30,77 +37,94 @@ namespace TP01Connect4
                 uneColonne.Afficher();
             }
         }
-
+        // Méthode qui s'occupe de l'insertion du jeton dans la case choisie
         public void InsererJeton(int col, string symbole)
         {
                 _colonnes[col].InsererJeton(symbole);
 
         }
 
-
+        // La plus grande méthode du programme, s'occupant de vérifier si il y a une combinaison gagnante, retourne bool true si oui...
         public bool EstGagnant()
         {
-            // Check for horizontal win
-            for (int row = 0; row < 6; row++)
+            // I pour rangée, j pour colonne
+            // Pour une victoire horizontale...
+            for (int i = 0; i < 6; i++)
             {
-                for (int col = 0; col < 4; col++) // Only check up to column 3 to avoid out-of-bounds
+                for (int j = 0; j < 4; j++)
                 {
-                    if (_colonnes[col]._cases[row].Contenu != "_" &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 1]._cases[row].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 2]._cases[row].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 3]._cases[row].Contenu)
+                    if (_colonnes[j]._cases[i].Contenu != "_" &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 1]._cases[i].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 2]._cases[i].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 3]._cases[i].Contenu)
                     {
-                        return true; // Found a winning line
+                        return true;
                     }
                 }
             }
 
-            // Check for vertical win
+            // Pour une victoire verticale...
+            for (int j = 0; j < 7; j++)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (_colonnes[j]._cases[i].Contenu != "_" &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j]._cases[i + 1].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j]._cases[i + 2].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j]._cases[i + 3].Contenu)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // Pour une victoire diagonale...(\)
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (_colonnes[j]._cases[i].Contenu != "_" &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 1]._cases[i + 1].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 2]._cases[i + 2].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 3]._cases[i + 3].Contenu)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // Pour une victoire diagonale... (/)
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 3; i < 6; i++)
+                {
+                    if (_colonnes[j]._cases[i].Contenu != "_" &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 1]._cases[i - 1].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 2]._cases[i - 2].Contenu &&
+                        _colonnes[j]._cases[i].Contenu == _colonnes[j + 3]._cases[i - 3].Contenu)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false; // Aucune victoire détectée
+        }
+
+        // Méthode vérifiant si toutes les colonnes sont pleine. Si oui, la partie est nulle...
+        internal bool PartieNulle()
+        {
             for (int col = 0; col < 7; col++)
             {
-                for (int row = 0; row < 3; row++) // Only check up to row 2 to avoid out-of-bounds
+                for (int row = 0; row < 6; row++)
                 {
-                    if (_colonnes[col]._cases[row].Contenu != "_" &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col]._cases[row + 1].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col]._cases[row + 2].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col]._cases[row + 3].Contenu)
+                    if (_colonnes[col]._cases[row].Contenu == "_")
                     {
-                        return true; // Found a winning line
+                        return false; 
                     }
                 }
             }
-
-            // Check for diagonal win (\)
-            for (int col = 0; col < 4; col++) // Only check up to column 3
-            {
-                for (int row = 0; row < 3; row++) // Only check up to row 2
-                {
-                    if (_colonnes[col]._cases[row].Contenu != "_" &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 1]._cases[row + 1].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 2]._cases[row + 2].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 3]._cases[row + 3].Contenu)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            // Check for diagonal win (/)
-            for (int col = 0; col < 4; col++) // Only check up to column 3
-            {
-                for (int row = 3; row < 6; row++) // Start from row 3 (to avoid out-of-bounds)
-                {
-                    if (_colonnes[col]._cases[row].Contenu != "_" &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 1]._cases[row - 1].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 2]._cases[row - 2].Contenu &&
-                        _colonnes[col]._cases[row].Contenu == _colonnes[col + 3]._cases[row - 3].Contenu)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false; // No win condition found
+            return true;
         }
     }
 }
